@@ -1,7 +1,8 @@
+const inputCheck = require('../../utils/inputCheck');
 const express = require('express');
 const router = express.Router();
 const db = require('../../db/connection');
-const inputCheck = require('../../utils/inputCheck');
+
 
 //get all departments
 router.get('/departments', (req, res) => {
@@ -37,11 +38,11 @@ router.get('/department/:id', (req, res) => {
 //add department
 router.post('/department', ({ body }, res) => {
     // Data validation
-    const errors = inputCheck(body, 'name');
-    if (errors) {
-        res.status(400).json({ error: errors });
-        return;
-    }
+    // const errors = inputCheck(body, 'name');
+    // if (errors) {
+    //     res.status(400).json({ error: errors });
+    //     return;
+    // }
     const sql = `INSERT INTO department (name) VALUES (?)`;
     const params = [body.name];
   
