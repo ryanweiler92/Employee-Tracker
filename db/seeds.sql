@@ -1,14 +1,8 @@
-INSERT INTO employee (first_name, last_name, role_id)
+INSERT INTO department (name)
 VALUES
-('Cersei', 'Lannister', 1),
-('Robb', 'Stark', 2),
-('Daenerys', 'Targaryen', 3),
-('Jaime', 'Lannister', 4),
-('Jon', 'Snow', 5),
-('Grey', 'Worm', 6),
-('Tyrion', 'Lannister', 7),
-('Sansa', 'Stark', 8),
-('Jorah', 'Mormont', 9);
+("The Lanisters"),
+("The Starks"),
+("The Targaryens");
 
 INSERT INTO role (title, salary, department_id)
 VALUES 
@@ -22,8 +16,14 @@ VALUES
 ('Hand of the Manager Winterfell', 60000, 2),
 ('Hand of the Manager Dragonstone', 60000, 3);
 
-INSERT INTO department (name)
+INSERT INTO employee (first_name, last_name, role_id)
 VALUES
-("The Lanisters"),
-("The Starks"),
-("The Targaryens");
+('Cersei', 'Lannister', 1),
+('Robb', 'Stark', 2),
+('Daenerys', 'Targaryen', 3),
+('Jaime', 'Lannister', 4),
+('Jon', 'Snow', 5),
+('Grey', 'Worm', 6),
+('Tyrion', 'Lannister', 7),
+('Sansa', 'Stark', 8),
+('Jorah', 'Mormont', 9);
