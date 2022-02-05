@@ -2,6 +2,7 @@ const inquirer = require('inquirer');
 const cTable = require('console.table');
 //imports functions from company.js
 const company = require('./lib/company');
+const Department = require('./lib/Department');
 
 //the inital prompt that allows users to perform actions
 const optionsPrompt = () => {
@@ -35,6 +36,27 @@ const optionsPrompt = () => {
     });
 };
 
+const addDepartmentPrompt = () => {
+    return inquirer.prompt([
+        {
+            type: 'input',
+            name: 'name',
+            message: "Please enter the name of the department (Required)",
+            validate: nameInput => {
+                if (nameInput) {
+                    return true;
+                } else {
+                    console.log('No department name was entered.');
+                    return false;
+                }
+            }
+        }
+    ])
+    .then((answers) => {
+        return new Department(answers.name).addDepartment()
+       
+    });
+};
 
 
 optionsPrompt();
