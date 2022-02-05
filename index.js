@@ -154,6 +154,43 @@ const addEmployeePrompt = () => {
     })
 };
 
+const updateEmployeePrompt = () => {
+    return inquirer.prompt([
+        {
+            type: 'input',
+            name: 'employee_id',
+            message: "Please enter the employee ID of the employee you want to update. (Required)",
+            validate: employeeIdInput => {
+                if (employeeIdInput) {
+                    return true;
+                } else {
+                    console.log('No employee ID was entered.');
+                    return false;
+                }
+            }
+        },
+        {
+            type: 'input',
+            name: 'role_id',
+            message: "Please enter the new role ID of the employee you want to update. (Required)",
+            validate: roleIdInput => {
+                if (roleIdInput) {
+                    return true;
+                } else {
+                    console.log('No role ID was entered.');
+                    return false;
+                }
+            }
+        }
+
+    ])
+    .then((answers) => {
+        console.log(answers.employee_id)
+        console.log(answers.role_id)
+        return new Employee(answers.role_id, answers.employee_id).updateEmployee()
+    });
+};
+
 
 
 optionsPrompt();
