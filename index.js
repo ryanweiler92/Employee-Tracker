@@ -1,6 +1,8 @@
 const inquirer = require('inquirer');
 const cTable = require('console.table');
-const Company = require('./lib/company');
+const viewDepartments = require('./lib/company');
+
+
 
 
 const optionsPrompt = () => {
@@ -34,12 +36,14 @@ const optionsPrompt = () => {
     });
 };
 
-const viewDepartmentsPrompt = () => 
+const viewDepartmentsPrompt = () => {
 
-    fetch('/api/departments', {
-        method: 'GET',
-    })
-    .then((res) => console.table(res))
+viewDepartments()
+return optionsPrompt();
+
+}
 
 
 optionsPrompt();
+
+module.exports = optionsPrompt
