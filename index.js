@@ -4,6 +4,7 @@ const cTable = require('console.table');
 const company = require('./lib/company');
 const Department = require('./lib/Department');
 const Role = require('./lib/Role');
+const Employee = require('./lib/Employee')
 
 //the inital prompt that allows users to perform actions
 const optionsPrompt = () => {
@@ -106,6 +107,52 @@ const addRolePrompt = () => {
     })
 };
 
+const addEmployeePrompt = () => {
+    return inquirer.prompt([
+        {
+            type: 'input',
+            name: 'first_name',
+            message: "Please enter the first name of the employee. (Required)",
+            validate: firstNameInput => {
+                if (firstNameInput) {
+                    return true;
+                } else {
+                    console.log('No first name was entered.');
+                    return false;
+                }
+            }
+        },
+        {
+            type: 'input',
+            name: 'last_name',
+            message: "Please enter the last name of the employee. (Required)",
+            validate: lastNameInput => {
+                if (lastNameInput) {
+                    return true;
+                } else {
+                    console.log('No last name was entered.');
+                    return false;
+                }
+            }
+        },
+        {
+            type: 'input',
+            name: 'role_id',
+            message: "Please enter the ID of the role that this employee corresponds to. (Required)",
+            validate: roleIdInput => {
+                if (roleIdInput) {
+                    return true;
+                } else {
+                    console.log('No role ID was entered.');
+                    return false;
+                }
+            }
+        }
+    ])
+    .then((answers) => {
+        return new Employee(answers.first_name, answers.last_name, answers.role_id).addEmployee()
+    })
+};
 
 
 
