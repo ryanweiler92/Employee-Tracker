@@ -1,4 +1,6 @@
 const inquirer = require('inquirer');
+const cTable = require('console.table');
+const Company = require('./lib/company');
 
 
 const optionsPrompt = () => {
@@ -32,15 +34,12 @@ const optionsPrompt = () => {
     });
 };
 
-const viewDepartmentsPrompt = () => {
-    return inquirer.prompt([
-        {
-            type: 'list',
-            name: 'test',
-            message: 'this is a test',
-            choices: ["test", "test2", "test3"]
-        }
-    ])
-}
+const viewDepartmentsPrompt = () => 
+
+    fetch('/api/departments', {
+        method: 'GET',
+    })
+    .then((res) => console.table(res))
+
 
 optionsPrompt();
