@@ -3,6 +3,7 @@ const cTable = require('console.table');
 //imports functions from company.js
 const company = require('./lib/company');
 const Department = require('./lib/Department');
+const Role = require('./lib/Role');
 
 //the inital prompt that allows users to perform actions
 const optionsPrompt = () => {
@@ -57,6 +58,55 @@ const addDepartmentPrompt = () => {
        
     });
 };
+
+const addRolePrompt = () => {
+    return inquirer.prompt([
+        {
+            type: 'input',
+            name: 'title',
+            message: "Please enter the title of the role. (Required)",
+            validate: titleInput => {
+                if (titleInput) {
+                    return true;
+                } else {
+                    console.log('No role title was entered.');
+                    return false;
+                }
+            }
+        },
+        {
+            type: 'input',
+            name: 'salary',
+            message: "Please enter the salary of the role. (Required)",
+            validate: salaryInput => {
+                if (salaryInput) {
+                    return true;
+                } else {
+                    console.log('No salary was entered.');
+                    return false;
+                }
+            }
+        },
+        {
+            type: 'input',
+            name: 'department_id',
+            message: "Please enter the ID of the department that this role corresponds to. (Required)",
+            validate: departmentIdInput => {
+                if (departmentIdInput) {
+                    return true;
+                } else {
+                    console.log('No department ID was entered.');
+                    return false;
+                }
+            }
+        }
+    ])
+    .then((answers) => {
+        return new Role(answers.title, answers.salary, answers.department_id).addRole()
+    })
+};
+
+
 
 
 optionsPrompt();
