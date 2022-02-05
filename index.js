@@ -3,8 +3,6 @@ const cTable = require('console.table');
 const viewDepartments = require('./lib/company');
 
 
-
-
 const optionsPrompt = () => {
     return inquirer.prompt([
         {
@@ -17,7 +15,7 @@ const optionsPrompt = () => {
     .then((answers) => {
         switch (answers.options) {
             case 'View all departments':
-                return viewDepartmentsPrompt();
+                return viewDepartments();
             case 'View all roles':
                 return viewAllRolesPrompt();
             case 'View all employees':
@@ -36,12 +34,6 @@ const optionsPrompt = () => {
     });
 };
 
-const viewDepartmentsPrompt = () => {
-
-viewDepartments()
-return optionsPrompt();
-
-}
 
 
 optionsPrompt();
