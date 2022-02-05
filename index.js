@@ -1,8 +1,9 @@
 const inquirer = require('inquirer');
 const cTable = require('console.table');
-const viewDepartments = require('./lib/company');
+//imports functions from company.js
+const company = require('./lib/company');
 
-
+//the inital prompt that allows users to perform actions
 const optionsPrompt = () => {
     return inquirer.prompt([
         {
@@ -15,11 +16,11 @@ const optionsPrompt = () => {
     .then((answers) => {
         switch (answers.options) {
             case 'View all departments':
-                return viewDepartments();
+                return company.viewDepartments();
             case 'View all roles':
-                return viewAllRolesPrompt();
+                return company.viewRoles();
             case 'View all employees':
-                return viewAllEmployeesPrompt();
+                return company.viewEmployees();
             case 'Add a department':
                 return addDepartmentPrompt();
             case 'Add a role':
