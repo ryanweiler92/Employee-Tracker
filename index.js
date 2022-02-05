@@ -187,7 +187,7 @@ const updateEmployeePrompt = () => {
     .then((answers) => {
         console.log(answers.employee_id)
         console.log(answers.role_id)
-        return new Employee(answers.role_id, answers.employee_id).updateEmployee()
+        return new Employee(null, null, answers.role_id, answers.employee_id).updateEmployee()
     });
 };
 
