@@ -5,6 +5,7 @@ const company = require('./lib/company');
 const Department = require('./lib/Department');
 const Role = require('./lib/Role');
 const Employee = require('./lib/Employee')
+const connection = require('./db/connection');
 
 //the inital prompt that allows users to perform actions
 const optionsPrompt = () => {
@@ -155,19 +156,15 @@ const addEmployeePrompt = () => {
 };
 
 const updateEmployeePrompt = () => {
+    connection.query(`SELECT first_name, last_name FROM employee`,
+    function(err, results, fields) {
+        console.log(results)
     return inquirer.prompt([
         {
-            type: 'input',
+            type: 'list',
             name: 'employee_id',
-            message: "Please enter the employee ID of the employee you want to update. (Required)",
-            validate: employeeIdInput => {
-                if (employeeIdInput) {
-                    return true;
-                } else {
-                    console.log('No employee ID was entered.');
-                    return false;
-                }
-            }
+            message: "Please select the employee you want to update. (Required)",
+            choices: results
         },
         {
             type: 'input',
@@ -189,7 +186,8 @@ const updateEmployeePrompt = () => {
         console.log(answers.role_id)
         return new Employee(null, null, answers.role_id, answers.employee_id).updateEmployee()
     });
-};
+}
+    )};
 
 
 
