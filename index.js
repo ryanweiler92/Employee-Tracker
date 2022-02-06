@@ -104,6 +104,7 @@ const addRolePrompt = () => {
         }
     ])
     .then((answers) => {
+        console.log(answers)
         return new Role(answers.title, answers.salary, answers.department_id).addRole()
     })
 };
@@ -164,9 +165,12 @@ const updateEmployeePrompt = () => {
             return [names.first_name, names.last_name].join(" ");
         })
 
-        //I also need to query `SELECT title, id FROM role`
-        //I have a function set up to do this in 'company.js' but i dont know how to use it within
-        //this function
+        const roleResults = connection.query(
+            `SELECT title, id FROM role`,
+            function(err, results, fields) {
+                let titles = results.map( (titles) => {
+                    return [titles.title, titles.id].join(" ")
+            })   
 
     return inquirer.prompt([
         {
@@ -174,24 +178,26 @@ const updateEmployeePrompt = () => {
             name: 'name',
             message: "Please select the employee you want to update. (Required)",
             choices: names
+        },
+        {
+            type: 'list',
+            name: 'role_id',
+            message: "Please select the new role for the employee. (Required)",
+            choices: titles
         }
-        // {
-        //     type: 'input',
-        //     name: 'role_id',
-        //     message: "Please select the new role for the employee. (Required)",
-        //     choices: roles
-        // }
     ])
     .then((answers) => {
         const name = answers.name.split(" ")
         const firstName = name[0]
         const lastName = name[1]
-        console.log(firstName, lastName)
+        const role = answers.role_id.split(" ")
+        const roleId = role.pop()
 
-        // return new Employee(null, null, answers.role_id, answers.employee_id).updateEmployee()
-    })
-}
-    )};
+        return new Employee(firstName, lastName, roleId).updateEmployee()
+        })
+        }
+    )}
+)};
 
 
     // {
