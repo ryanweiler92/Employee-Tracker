@@ -151,43 +151,57 @@ const addEmployeePrompt = () => {
         }
     ])
     .then((answers) => {
+        console.log(answers.first_name, answers.last_name, answers.role_id)
         return new Employee(answers.first_name, answers.last_name, answers.role_id).addEmployee()
     })
 };
 
 const updateEmployeePrompt = () => {
+    //query database for employee names and destructure into an array.
     connection.query(`SELECT first_name, last_name FROM employee`,
     function(err, results, fields) {
-        console.log(results)
+        let names = results.map( (names) => {
+            return [names.first_name, names.last_name].join(" ");
+        })
+
+        //I also need to query `SELECT title, id FROM role`
+        //I have a function set up to do this in 'company.js' but i dont know how to use it within
+        //this function
+
     return inquirer.prompt([
         {
             type: 'list',
-            name: 'employee_id',
+            name: 'name',
             message: "Please select the employee you want to update. (Required)",
-            choices: results
-        },
-        {
-            type: 'input',
-            name: 'role_id',
-            message: "Please enter the new role ID of the employee you want to update. (Required)",
-            validate: roleIdInput => {
-                if (roleIdInput) {
-                    return true;
-                } else {
-                    console.log('No role ID was entered.');
-                    return false;
-                }
-            }
+            choices: names
         }
-
+        // {
+        //     type: 'input',
+        //     name: 'role_id',
+        //     message: "Please select the new role for the employee. (Required)",
+        //     choices: roles
+        // }
     ])
     .then((answers) => {
-        console.log(answers.employee_id)
-        console.log(answers.role_id)
-        return new Employee(null, null, answers.role_id, answers.employee_id).updateEmployee()
-    });
+        const name = answers.name.split(" ")
+        const firstName = name[0]
+        const lastName = name[1]
+        console.log(firstName, lastName)
+
+        // return new Employee(null, null, answers.role_id, answers.employee_id).updateEmployee()
+    })
 }
     )};
+
+
+    // {
+    //     type: 'input',
+    //     name: 'role_id',
+    //     message: "Please select the new role for the employee. (Required)",
+    //     choices: roles
+    // }
+    
+    
 
 
 
