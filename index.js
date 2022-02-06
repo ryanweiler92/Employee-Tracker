@@ -1,11 +1,12 @@
 const inquirer = require('inquirer');
 const cTable = require('console.table');
-//imports functions from company.js
+const connection = require('./db/connection');
+
 const company = require('./lib/company');
 const Department = require('./lib/Department');
 const Role = require('./lib/Role');
 const Employee = require('./lib/Employee')
-const connection = require('./db/connection');
+
 
 //the inital prompt that allows users to perform actions
 const optionsPrompt = () => {
@@ -62,6 +63,11 @@ const addDepartmentPrompt = () => {
 };
 
 const addRolePrompt = () => {
+    connection.query(`SELECT name FROM department`,
+    function(err, results, fields) {
+        let names = results.map( (names) => {
+            return [names.name].join(" ")
+        });
     return inquirer.prompt([
         {
             type: 'input',
@@ -90,24 +96,28 @@ const addRolePrompt = () => {
             }
         },
         {
-            type: 'input',
-            name: 'department_id',
-            message: "Please enter the ID of the department that this role corresponds to. (Required)",
-            validate: departmentIdInput => {
-                if (departmentIdInput) {
-                    return true;
-                } else {
-                    console.log('No department ID was entered.');
-                    return false;
-                }
-            }
+            type: 'list',
+            name: 'department_name',
+            message: "Please select the department that this role corresponds to. (Required)",
+            choices: names
         }
     ])
     .then((answers) => {
         console.log(answers)
-        return new Role(answers.title, answers.salary, answers.department_id).addRole()
+        let departmentName = answers.department_name
+          connection.query(
+               `SELECT id FROM department WHERE name = ?`,
+               [departmentName],
+               function(err, results, fields) {    
+                   const departmentId = results;
+                   return new Role(answers.title, answers.salary, departmentId[0].id).addRole()
+        })
     })
-};
+    }
+)}
+
+
+
 
 const addEmployeePrompt = () => {
     return inquirer.prompt([
@@ -164,7 +174,7 @@ const updateEmployeePrompt = () => {
         let names = results.map( (names) => {
             return [names.first_name, names.last_name].join(" ");
         })
-
+        console.log(names)
         const roleResults = connection.query(
             `SELECT title, id FROM role`,
             function(err, results, fields) {
@@ -198,17 +208,6 @@ const updateEmployeePrompt = () => {
         }
     )}
 )};
-
-
-    // {
-    //     type: 'input',
-    //     name: 'role_id',
-    //     message: "Please select the new role for the employee. (Required)",
-    //     choices: roles
-    // }
-    
-    
-
 
 
 optionsPrompt();
