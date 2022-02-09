@@ -17,8 +17,8 @@ The installation process is very simple. First you will need to download the rep
 
 ## Usage
 You will be required to enter information for all of the prompts. 
-![screenshot]()
-For video instructions please visit click [here]().
+![screenshot](./assets/images/screenshot.jpg)
+For video instructions please visit click [here](https://drive.google.com/file/d/1sH3YbR3Atf2UVzJj3-5ikMxYD2VIPWre/view).
 
 ## Contributors
 Ryan Weiler

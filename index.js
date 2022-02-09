@@ -35,6 +35,7 @@ const optionsPrompt = () => {
             case 'Update an employee role':
                 return updateEmployeePrompt();
             case 'Exit':
+                console.log("Thanks for using Employee Tracker!")
                 return;
         };
     });
@@ -108,7 +109,6 @@ const addRolePrompt = () => {
                `SELECT id FROM department WHERE name = ?`,
                [departmentName],
                function(err, results, fields) {    
-                   console.log(results)
                    const departmentId = results;
                    return new Role(answers.title, answers.salary, departmentId[0].id).addRole()
         })
@@ -175,19 +175,15 @@ const addEmployeePrompt = () => {
 
     ])
     .then((answers) => {
-        console.log(answers)
         let roleTitle = answers.role_title
         let managerName = answers.manager_name.split(" ")
         let firstName = managerName[0].toString()
         let lastName = managerName[1].toString()
-        console.log(firstName + " " + lastName)
-        console.log(roleTitle)
         let managerId = []
         const managerFind = connection.query(
             `SELECT id FROM employee WHERE first_name = ? AND last_name =? `,
             [firstName, lastName],
             function (err, results1, fields) {
-                console.log(results1)
                  managerId.push(results1[0])
                 
             }
@@ -196,10 +192,7 @@ const addEmployeePrompt = () => {
             `SELECT id FROM role WHERE title = ?`,
             [roleTitle],
             function(err, results, fields) {
-                console.log(results)
                 const roleId = results
-                console.log(managerId)
-                console.log(answers.first_name, answers.last_name, roleId[0].id, managerId[0].id)
                 return new Employee(answers.first_name, answers.last_name, roleId[0].id, managerId[0].id).addEmployee()
              })
                 
