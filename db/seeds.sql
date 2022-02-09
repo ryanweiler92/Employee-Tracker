@@ -16,14 +16,14 @@ VALUES
 ('Hand of the Manager Winterfell', 60000, 2),
 ('Hand of the Manager Dragonstone', 60000, 3);
 
-INSERT INTO employee (first_name, last_name, role_id)
+INSERT INTO employee (first_name, last_name, role_id, manager_id)
 VALUES
-('Cersei', 'Lannister', 1),
-('Robb', 'Stark', 2),
-('Daenerys', 'Targaryen', 3),
-('Jaime', 'Lannister', 4),
-('Jon', 'Snow', 5),
-('Grey', 'Worm', 6),
-('Tyrion', 'Lannister', 7),
-('Sansa', 'Stark', 8),
-('Jorah', 'Mormont', 9);
+('Cersei', 'Lannister', 1, NULL),
+('Robb', 'Stark', 2, NULL),
+('Daenerys', 'Targaryen', 3, NULL),
+('Jaime', 'Lannister', 4, 1),
+('Jon', 'Snow', 5, 2),
+('Grey', 'Worm', 6, 3),
+('Tyrion', 'Lannister', 7, 1),
+('Sansa', 'Stark', 8, 2),
+('Jorah', 'Mormont', 9, 3);

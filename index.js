@@ -120,6 +120,12 @@ const addRolePrompt = () => {
 
 
 const addEmployeePrompt = () => {
+    connection.query(`SELECT title from ROLE`,
+    function (err, results, fields) {
+        let titles = results.map( (titles) => {
+            return [titles.title].join(" ")
+        })
+    
     return inquirer.prompt([
         {
             type: 'input',
@@ -148,22 +154,23 @@ const addEmployeePrompt = () => {
             }
         },
         {
-            type: 'input',
-            name: 'role_id',
-            message: "Please enter the ID of the role that this employee corresponds to. (Required)",
-            validate: roleIdInput => {
-                if (roleIdInput) {
-                    return true;
-                } else {
-                    console.log('No role ID was entered.');
-                    return false;
-                }
-            }
+            type: 'list',
+            name: 'role_title',
+            message: "Please select the title of the role that this employee corresponds to. (Required)",
+            choices: titles
         }
     ])
     .then((answers) => {
-        console.log(answers.first_name, answers.last_name, answers.role_id)
-        return new Employee(answers.first_name, answers.last_name, answers.role_id).addEmployee()
+        console.log(answers)
+        let roleTitle = answers.role_title
+        connection.query(
+            `SELECT id FROM role WHERE title = ?`,
+            [roleTitle],
+            function(err, results, fields) {
+                const roleId = results
+                return new Employee(answers.first_name, answers.last_name, roleId[0].id).addEmployee()
+            }) 
+        })
     })
 };
 
