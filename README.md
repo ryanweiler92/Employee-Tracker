@@ -28,7 +28,6 @@ No testing available at this time.
 
 ## Questions
 * GitHub User Name: [ryanweiler92](https://github.com/ryanweiler92)
-* Application Link: [Team Profile Generator](https://github.com/ryanweiler92/Employee-Tracker)
 * For any additional questions please reach out to ryanweiler92@gmail.com.
 
 ## License
