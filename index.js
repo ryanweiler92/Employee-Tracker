@@ -182,20 +182,32 @@ const addEmployeePrompt = () => {
         let lastName = managerName[1].toString()
         console.log(firstName + " " + lastName)
         console.log(roleTitle)
-        connection.query(
-            `SELECT (SELECT id FROM role WHERE title = ?)
-            (SELECT id FROM employee WHERE first_name = ? AND last_name = ?)  `,
-            ([roleTitle],[firstName, lastName]),
+        let managerId = []
+        const managerFind = connection.query(
+            `SELECT id FROM employee WHERE first_name = ? AND last_name =? `,
+            [firstName, lastName],
+            function (err, results1, fields) {
+                console.log(results1)
+                 managerId.push(results1[0])
+                
+            }
+        )
+        const roleFind = connection.query(
+            `SELECT id FROM role WHERE title = ?`,
+            [roleTitle],
             function(err, results, fields) {
                 console.log(results)
-                const roleId = results[0]
-                const managerId = results[1]
-                return new Employee(answers.first_name, answers.last_name, roleId[0].id,).addEmployee()
+                const roleId = results
+                console.log(managerId)
+                console.log(answers.first_name, answers.last_name, roleId[0].id, managerId[0].id)
+                return new Employee(answers.first_name, answers.last_name, roleId[0].id, managerId[0].id).addEmployee()
+             })
+                
             }) 
         })
     })
-    })
-};
+    }
+
 
 const updateEmployeePrompt = () => {
     //query database for employee names and destructure into an array.
