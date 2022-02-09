@@ -103,12 +103,12 @@ const addRolePrompt = () => {
         }
     ])
     .then((answers) => {
-        console.log(answers)
         let departmentName = answers.department_name
           connection.query(
                `SELECT id FROM department WHERE name = ?`,
                [departmentName],
                function(err, results, fields) {    
+                   console.log(results)
                    const departmentId = results;
                    return new Role(answers.title, answers.salary, departmentId[0].id).addRole()
         })
@@ -125,6 +125,13 @@ const addEmployeePrompt = () => {
         let titles = results.map( (titles) => {
             return [titles.title].join(" ")
         })
+        const employeeNames = connection.query(
+            `SELECT manager.first_name, manager.last_name FROM employee
+            LEFT JOIN employee AS manager on employee.manager_id = manager.id`,
+            function(err, results, fields) {
+                let names = results.map( (names) => {
+                    return [names.first_name, names.last_name].join(" ");
+            })
     
     return inquirer.prompt([
         {
@@ -158,19 +165,35 @@ const addEmployeePrompt = () => {
             name: 'role_title',
             message: "Please select the title of the role that this employee corresponds to. (Required)",
             choices: titles
+        },
+        {
+            type: 'list',
+            name: 'manager_name',
+            message: "Please select the manager that the employee reports to",
+            choices: names
         }
+
     ])
     .then((answers) => {
         console.log(answers)
         let roleTitle = answers.role_title
+        let managerName = answers.manager_name.split(" ")
+        let firstName = managerName[0].toString()
+        let lastName = managerName[1].toString()
+        console.log(firstName + " " + lastName)
+        console.log(roleTitle)
         connection.query(
-            `SELECT id FROM role WHERE title = ?`,
-            [roleTitle],
+            `SELECT (SELECT id FROM role WHERE title = ?)
+            (SELECT id FROM employee WHERE first_name = ? AND last_name = ?)  `,
+            ([roleTitle],[firstName, lastName]),
             function(err, results, fields) {
-                const roleId = results
-                return new Employee(answers.first_name, answers.last_name, roleId[0].id).addEmployee()
+                console.log(results)
+                const roleId = results[0]
+                const managerId = results[1]
+                return new Employee(answers.first_name, answers.last_name, roleId[0].id,).addEmployee()
             }) 
         })
+    })
     })
 };
 
@@ -181,7 +204,6 @@ const updateEmployeePrompt = () => {
         let names = results.map( (names) => {
             return [names.first_name, names.last_name].join(" ");
         })
-        console.log(names)
         const roleResults = connection.query(
             `SELECT title, id FROM role`,
             function(err, results, fields) {
